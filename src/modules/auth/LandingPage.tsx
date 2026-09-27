@@ -23,8 +23,10 @@ const LANDING_FEATURES = [
 export const LandingPage = observer(function LandingPage() {
   const navigate = useNavigate();
   const isMobileShell = useIsMobileShell();
-  const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const host = window.location.hostname;
+  const isLocalhost = host === 'localhost' || host === '127.0.0.1';
+  // Публичное демо на GitHub Pages: рекрутер без VK ID должен пройти дальше лендинга.
+  const isPortfolioDemoHost = host.endsWith('github.io');
   const hasHttpsOrigin = window.location.protocol === 'https:';
 
   const pageRef = useRef<HTMLElement | null>(null);
@@ -59,7 +61,7 @@ export const LandingPage = observer(function LandingPage() {
     return <Navigate to={APP_ROUTES.app} replace />;
   }
 
-  const showLocalDemo = isLocalhost;
+  const showLocalDemo = isLocalhost || isPortfolioDemoHost;
   const showVkAuth = hasHttpsOrigin;
   const showVkHint = isLocalhost && !hasHttpsOrigin;
 
