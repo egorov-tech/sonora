@@ -209,6 +209,7 @@ body {
     transform: translate(0, 0) scale(1);
     opacity: 0.85;
   }
+
   50% {
     transform: translate(30px, 20px) scale(1.08);
     opacity: 1;
@@ -221,6 +222,7 @@ body {
     transform: translate(0, 0) scale(1);
     opacity: 0.8;
   }
+
   50% {
     transform: translate(-24px, -18px) scale(1.05);
     opacity: 1;
@@ -233,6 +235,7 @@ body {
     transform: translate(0, 0) scale(1);
     opacity: 0.75;
   }
+
   50% {
     transform: translate(-18px, -26px) scale(1.1);
     opacity: 1;
@@ -245,6 +248,7 @@ body {
     transform: translate(0, 0) scale(1);
     opacity: 0.6;
   }
+
   50% {
     transform: translate(16px, -20px) scale(1.12);
     opacity: 0.95;

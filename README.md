@@ -1,79 +1,90 @@
 # Sonora
 
-Музыкальное приложение на React 19 + TypeScript. Реальное воспроизведение треков через Jamendo API, подборки по настроению с автовыбором на основе времени суток, полнофункциональный плеер с очередью.
+[![CI](https://github.com/egorov-tech/sonora/actions/workflows/ci.yml/badge.svg)](https://github.com/egorov-tech/sonora/actions/workflows/ci.yml)
+![React 19](https://img.shields.io/badge/React-19-20232A?logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![MobX](https://img.shields.io/badge/MobX-6-FF9955?logo=mobx&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
 
-## Возможности
+Музыкальный плеер на React 19 + TypeScript: реальные треки из Jamendo API, подборки
+по настроению с автовыбором по времени суток, очередь, плейлисты, dark/light тема.
 
-- **Аудио**: воспроизведение реальных треков через [Jamendo API](https://www.jamendo.com/start), очередь, shuffle, repeat, управление громкостью
-- **Главная**: подборки по настроению (утро / энергия / фокус / расслабление / ночь), дефолтное настроение выбирается по времени суток
-- **Поиск**: debounce-поиск по Jamendo + фильтр по жанрам (mood-пресеты)
-- **Медиатека**: создание и управление плейлистами
-- **Тема**: dark/light переключение через CSS-переменные
-- **Адаптив**: мобилки, планшеты, десктоп; сворачиваемый сайдбар
-- **Авторизация**: VK ID (OneTap) или демо-вход
+**Демо:** <https://egorov-tech.github.io/sonora/>
 
-## Стек
+| Десктоп | Мобильный |
+|:-:|:-:|
+| <img src="docs/screenshots/desktop.png" alt="Sonora — десктоп" width="560" /> | <img src="docs/screenshots/mobile.png" alt="Sonora — мобильный" width="220" /> |
 
-| Слой | Технология |
-|------|-----------|
-| UI | React 19 + TypeScript |
-| Роутинг | React Router 6 (HashRouter) |
-| Стейт | MobX 6 |
-| Сборка | Vite 5 |
-| API | Jamendo REST API |
-| Стили | CSS-переменные, dark/light тема |
+## Что умеет
 
-## Быстрый старт
-
-```bash
-# 1. Создай .env на основе примера
-cp .env.example .env
-# Укажи свой VK App ID (для VK ID входа) — без него работает демо-вход
-# VITE_VK_APP_ID=your-vk-app-id
-
-# 2. Установи зависимости
-npm install
-
-# 3. Запусти dev-сервер
-npm run dev
-# → http://localhost:33000
-```
-
-## Команды
-
-| Команда | Описание |
-|---------|----------|
-| `npm run dev` | Dev-сервер на порту 33000 |
-| `npm run build` | Продакшн-сборка |
-| `npm run preview` | Предпросмотр сборки |
-| `npm run typecheck` | Проверка типов (`tsc --noEmit`) |
-| `npm run lint` | ESLint |
-| `npm run lint:styles` | Stylelint |
-| `npm run format` | Prettier |
+- **Воспроизведение** реальных треков: очередь, shuffle, repeat, громкость, горячие клавиши
+- **Подборки по настроению** (утро / энергия / фокус / расслабление / ночь), стартовая — по времени суток
+- **Поиск** по Jamendo с debounce и фильтром по жанрам
+- **Медиатека**: создание и удаление плейлистов
+- **Адаптив** от телефона до десктопа, сворачиваемый сайдбар, тема на CSS-переменных
+- **Вход** через VK ID (OneTap); на localhost — демо-вход без VK
 
 ## Архитектура
 
 ```
 src/
-├── app/           # Роутинг (AppRouter), layout, провайдеры, гарды
-├── modules/       # Фичи: auth, shell (Home, Search), library, player
-├── store/         # MobX: playerStore (аудио + очередь), authStore
-├── shared/        # API (jamendo.ts), маппер, утилиты форматирования
-├── types/         # TypeScript типы (Track, Playlist)
-└── styles/        # CSS-токены + тематические слои
+├── app/       роутинг, layout, провайдеры, гард RequireAuth
+├── modules/   фичи: auth, shell (главная, поиск), library, player
+├── store/     MobX: playerStore (аудио + очередь), authStore
+├── shared/    API-клиент Jamendo, маппер DTO → модель, утилиты, UI-примитивы
+├── types/     доменные типы Track, Playlist
+└── styles/    токены и тематические слои
 ```
 
-**Feature-модули** изолированы по директориям. Сторы (`playerStore`, `authStore`) — глобальные синглтоны, экспортируются из `store/store.ts`. Маршруты защищены гардом `RequireAuth`.
+Данные идут в одну сторону: `shared/api` получает DTO Jamendo → `jamendoMapper`
+превращает их в доменный `Track` → сторы хранят только доменные модели → компоненты
+читают сторы через `observer`. Формат внешнего API не протекает дальше маппера.
 
-## Деплой (GitHub Pages)
+## Решения и компромиссы
+
+**Защита от гонки при переключении треков.** Быстрые клики «следующий» запускают
+несколько загрузок аудио, и ответ старой может прийти последним. `playerStore`
+увеличивает счётчик поколения на каждую загрузку и игнорирует события, если поколение
+уже сменилось. Отмена через `AbortController` не помогла бы: `HTMLAudioElement` грузит
+поток сам, а не через `fetch`.
+
+**Не перезапускать уже играющую очередь.** Если пользователь снова жмёт «играть» на той же
+подборке, стор сравнивает треки по `id` и продолжает текущую очередь, а не сбрасывает
+позицию.
+
+**MobX вместо Redux.** Плеер — это много мелкого изменяемого состояния (время, громкость,
+очередь, флаги), и позиция воспроизведения обновляется несколько раз в секунду. MobX обновляет только
+подписанные компоненты без селекторов и мемоизации вручную. Цена — глобальные
+сторы-синглтоны: для учебного приложения это приемлемо, в большом проекте их стоило бы
+отдавать через контекст ради тестируемости.
+
+**HashRouter.** GitHub Pages не умеет отдавать `index.html` на произвольный путь, поэтому
+маршруты живут после `#`. Ради красивых URL понадобился бы хостинг с rewrite-правилами.
+
+## Качество
+
+CI на каждый push и PR: ESLint, Stylelint (BEM), Prettier, `tsc --noEmit`, тесты
+(Vitest), сборка. Тесты: поведенческие для форматирования и склонений, smoke-рендер
+всего приложения в jsdom с подменённой сетью — тесты не зависят от доступности Jamendo.
+
+## Запуск
 
 ```bash
-npm run build
-# dist/ деплоится на GitHub Pages через .github/workflows/static.yml
+cp .env.example .env   # VITE_VK_APP_ID — только для входа через VK
+npm install
+npm run dev            # http://localhost:33000
 ```
 
-Базовый путь задаётся через переменную окружения `VITE_BASE_PATH` (по умолчанию `/`). Для GitHub Pages укажи путь к репозиторию в настройках CI.
+| Команда | Что делает |
+|---|---|
+| `npm test` | тесты (Vitest) |
+| `npm run lint` / `lint:styles` | ESLint / Stylelint |
+| `npm run typecheck` | проверка типов |
+| `npm run build` | продакшн-сборка |
 
-## VK ID
+Деплой на GitHub Pages — `.github/workflows/static.yml`, базовый путь задаёт `VITE_BASE_PATH`.
+Для входа через VK ID нужен HTTPS и приложение на [dev.vk.com](https://dev.vk.com/).
 
-Для полноценного входа через VK ID нужен HTTPS и зарегистрированное приложение на [dev.vk.com](https://dev.vk.com/). На `localhost` доступен демо-вход без VK.
+## Стек
+
+React 19 · TypeScript · MobX 6 · React Router 6 · Vite 5 · Vitest · Jamendo REST API

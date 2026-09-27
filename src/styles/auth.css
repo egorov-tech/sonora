@@ -130,8 +130,12 @@
   border-radius: var(--radius-full);
   flex-shrink: 0;
   background: var(--brand-green);
-  box-shadow: 0 0 0 3px var(--brand-accent-soft), 0 0 10px var(--brand-accent-glow);
-  transition: background-color 0.4s ease, box-shadow 0.4s ease;
+  box-shadow:
+    0 0 0 3px var(--brand-accent-soft),
+    0 0 10px var(--brand-accent-glow);
+  transition:
+    background-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 .landing-actions {
@@ -170,6 +174,7 @@
   100% {
     box-shadow: 0 4px 20px var(--brand-accent-glow);
   }
+
   50% {
     box-shadow:
       0 4px 20px var(--brand-accent-glow),

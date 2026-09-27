@@ -23,7 +23,9 @@
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
     z-index: 100;
-    box-shadow: var(--shadow-xl), 0 0 0 1px rgba(var(--mood-a), 0.06);
+    box-shadow:
+      var(--shadow-xl),
+      0 0 0 1px rgba(var(--mood-a), 0.06);
     overflow: hidden;
     grid-template-columns: minmax(0, 1fr);
   }

@@ -30,7 +30,13 @@ export const LandingPage = observer(function LandingPage() {
   const pageRef = useRef<HTMLElement | null>(null);
   const [moodKey, setMoodKey] = useState<MoodKey>(() => {
     const stored = playerStore.selectedHomeMoodKey;
-    if (stored === 'morning' || stored === 'energy' || stored === 'relax' || stored === 'focus' || stored === 'night') {
+    if (
+      stored === 'morning' ||
+      stored === 'energy' ||
+      stored === 'relax' ||
+      stored === 'focus' ||
+      stored === 'night'
+    ) {
       return stored;
     }
     return 'energy';

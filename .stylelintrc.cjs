@@ -11,5 +11,9 @@ module.exports = {
     'color-hex-length': null,
     'color-function-notation': null,
     'alpha-value-notation': null,
+    'selector-class-pattern': [
+      '^[a-z][a-z0-9]*(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$',
+      { message: 'Expected BEM class name (block__element--modifier)' },
+    ],
   },
 };
