@@ -104,39 +104,31 @@
   --bg-highlight: #e2e2e4;
   --bg-elevated: #ffffff;
   --bg-strong: #d8d8da;
-
   --brand-on-accent: #0b0b0d;
-
   --text-base: #1d1d1f;
   --text-subdued: #6e6e73;
   --text-placeholder: #98989d;
-
   --interactive-normal: #6e6e73;
   --interactive-hover: #1d1d1f;
   --interactive-active: rgb(var(--mood-a));
-
   --border-subdued: rgba(0, 0, 0, 0.07);
   --border-base: rgba(0, 0, 0, 0.12);
   --border-highlight: rgba(0, 0, 0, 0.22);
-
   --success: #1f9d6f;
   --warning: #b9790a;
   --error: #d92d3f;
   --notice: #3568d4;
-
   --panel-card: #ffffff;
   --panel-card-hover: #f4f4f5;
   --panel-sidebar: rgba(255, 255, 255, 0.95);
   --panel-player: rgba(255, 255, 255, 0.96);
   --panel-overlay: rgba(245, 245, 247, 0.9);
-
   --gradient-hero:
     radial-gradient(ellipse 100% 70% at 0% -10%, rgba(var(--mood-a), 0.12) 0%, transparent 50%),
     radial-gradient(ellipse 70% 50% at 100% 0%, rgba(var(--mood-b), 0.1) 0%, transparent 45%),
     linear-gradient(180deg, #ffffff 0%, var(--bg-base) 100%);
   --gradient-card: linear-gradient(145deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0) 100%), #ffffff;
   --gradient-sidebar: linear-gradient(180deg, #ffffff 0%, #f5f5f7 100%);
-
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.1);

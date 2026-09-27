@@ -17,7 +17,9 @@
   gap: 16px;
   padding: 0 20px;
   z-index: 100;
-  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(var(--mood-a), 0.06);
+  box-shadow:
+    var(--shadow-xl),
+    0 0 0 1px rgba(var(--mood-a), 0.06);
   transition: box-shadow 0.4s ease;
 }
 
@@ -122,9 +124,11 @@
   0% {
     transform: scale(1);
   }
+
   40% {
     transform: scale(1.35);
   }
+
   100% {
     transform: scale(1);
   }
@@ -189,6 +193,7 @@
   100% {
     box-shadow: 0 4px 16px var(--brand-accent-glow);
   }
+
   50% {
     box-shadow:
       0 4px 16px var(--brand-accent-glow),
@@ -447,7 +452,9 @@
 
 /* Light theme */
 :root[data-theme='light'] .player-bar {
-  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(var(--mood-a), 0.08);
+  box-shadow:
+    var(--shadow-xl),
+    0 0 0 1px rgba(var(--mood-a), 0.08);
 }
 
 :root[data-theme='light'] .player-toggle {

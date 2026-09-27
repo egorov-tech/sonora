@@ -169,7 +169,8 @@ export const HomePage = observer(function HomePage() {
 
   const tracks = playerStore.homeFeedTracks;
   const featuredTracks = tracks.slice(0, FEATURED_TRACK_COUNT);
-  const catalogTracks = tracks.length > FEATURED_TRACK_COUNT ? tracks.slice(FEATURED_TRACK_COUNT) : [];
+  const catalogTracks =
+    tracks.length > FEATURED_TRACK_COUNT ? tracks.slice(FEATURED_TRACK_COUNT) : [];
   const showCatalog = catalogTracks.length > 0;
 
   return (
